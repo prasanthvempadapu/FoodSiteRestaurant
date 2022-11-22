@@ -1,0 +1,22 @@
+﻿@using OwnerApp.Models
+@model AdminUser
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center text-success">Welcome Admin</h1>
+<h2 class="text-center">Log in to your Account</h2>
+<form method="post" asp-controller="AdminFoodSite" asp-action="Index">
+    <div class="">
+        <label style="width:80px" class="m-4" asp-for="UserName">User Id</label>
+        <input  placeholder="Username" class="" type="text" asp-for="UserName"/>
+        <span class="text-danger" asp-validation-for="UserName"></span>
+    </div>
+    <div class="">
+        <label style="width:80px" class="m-4" asp-for="Password">Password</label>
+        <input style="height:30px" placeholder="Password" class="" type="password" asp-for="Password"/>
+        <span class="text-danger" asp-validation-for="Password"></span>
+    </div>
+    <input style="margin:30px" type="submit" class="btn btn-primary" value="Log in"/>
+    
+</form>

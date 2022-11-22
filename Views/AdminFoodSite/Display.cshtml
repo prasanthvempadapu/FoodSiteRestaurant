@@ -1,0 +1,98 @@
+﻿@using OwnerApp.Models
+@using System.Data.SqlClient;
+@model List<Orders>
+@{
+    ViewData["Title"] = "Display";
+    List<Order> orders = new List<Order>();
+    SqlConnection conn4 = new SqlConnection("Data Source=PSL-FL527L3;Initial Catalog=DEMO;Integrated Security=True;");
+    SqlCommand cmd4 = new SqlCommand("Select * from CompletedOrders", conn4);
+    conn4.Open();
+    SqlDataReader sr4 = cmd4.ExecuteReader();
+    Order o = new Order();
+    while (sr4.Read())
+    {
+        o = new Order(Convert.ToInt32(sr4["Id"]), sr4["userName"].ToString(), sr4["OrderName"].ToString(), sr4["Quantity"].ToString(), Convert.ToInt32(sr4["Price"]), sr4["Address"].ToString(),sr4["Status"].ToString());
+        orders.Add(o);
+    }
+}
+<div class="d-flex justify-content-between">
+    <h1 class="text-success">
+        Welcome Back Sir
+    </h1>
+    <p style="font-size:25px">@Html.ActionLink("Log Out","Index")</p>
+</div> 
+<h2 class="text-danger">Current Orders</h2>
+<p style="font-size:20px">@Html.ActionLink("Refresh","Display")</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>User</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Amount</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var i in Model)
+        {
+            <tr>
+                <td>@i.Id</td>
+                <td>@i.UserName</td>
+                <td>@i.OrderName</td>
+                <td>@i.Quantity</td>
+                <td>@i.Price</td>
+                <td>@i.Address</td>
+                
+                <td>@Html.ActionLink("Delivered", "Delete", new { id=i.Id })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<h2 class="text-primary">Completed Orders</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>User</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Amount</th>
+            <th>Address</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var i in orders)
+        {
+            @if(@i.Status=="Delivered")
+            {
+                <tr>
+                <td>@i.Id</td>
+                <td>@i.UserName</td>
+                <td>@i.OrderName</td>
+                <td>@i.Quantity</td>
+                <td>@i.Price</td>
+                <td>@i.Address</td>
+                <td class="text-success">@i.Status</td>
+                
+                
+            </tr>
+            }else{
+                <tr>
+                <td>@i.Id</td>
+                <td>@i.UserName</td>
+                <td>@i.OrderName</td>
+                <td>@i.Quantity</td>
+                <td>@i.Price</td>
+                <td>@i.Address</td>
+                <td class="text-danger">@i.Status</td>
+                
+                
+            </tr>
+            }
+            
+        }
+    </tbody>
+</table>
